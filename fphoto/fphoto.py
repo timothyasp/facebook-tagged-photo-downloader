@@ -106,7 +106,7 @@ class FacebookPhoto(object):
 
 if __name__ == '__main__':
     access_token = "ACCESS_CODE_HERE"
-    base_dir = '/Users/tasp/Dropbox/Personal/Photos/Facebook/'
+    base_dir = 'BASE_DIR'
     tagged_dir = '_TaggedPhotos'
 
     f = FacebookPhoto(access_token)
