@@ -49,15 +49,11 @@ class FacebookPhoto(object):
         self.graph = GraphAPI(self.access_token)
 
     def photos(self):
-        query = {'query': 'SELECT object_id, pid, aid, images, caption, position \
-                           FROM photo \
-                           WHERE owner=me() or pid in \
-                             (SELECT pid FROM photo_tag WHERE subject=me()) \
-                           LIMIT 1500'}
+        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE owner=me() or pid in (SELECT pid FROM photo_tag WHERE subject=me()) LIMIT 1500'}
         return self._fql_result(self.graph.fql(query))
 
     def album(self, aid):
-        query = {'query': 'SELECT object_id, type, owner, name, description, size, link, photo_count FROM album WHERE aid='+aid}
+        query = {'query': 'SELECT object_id, type, owner, name, description, size, link, photo_count FROM album WHERE aid="'+str(aid)+'"'}
         return self._fql_result(self.graph.fql(query))
 
     def album_user(self, userid):
@@ -65,7 +61,7 @@ class FacebookPhoto(object):
         return self._fql_result(self.graph.fql(query))
 
     def album_photos(self, aid):
-        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE aid="'+ aid +'" LIMIT 1000'}
+        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE aid="'+ str(aid) +'" LIMIT 1000'}
         return self._fql_result(self.graph.fql(query))
 
     def albums(self):
@@ -168,6 +164,4 @@ belong too (~150 albums for 800 tagged photos)."
 
         cur_album += 1
 
-
-        print "And we're done."
-
+    print "And we're done."
