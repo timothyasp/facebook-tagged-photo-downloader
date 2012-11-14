@@ -3,6 +3,10 @@ import os.path
 import urllib2
 import re
 
+ACCESS_TOKEN = "ACCESS CODE"
+BASE_DIR = 'DIRECTORY TO DOWNLOAD YOUR PHOTOS'
+TAGGED_DIR = '_TaggedPhotos'
+
 class Photo:
     def __init__(self, directory):
         self.directory = directory
@@ -45,7 +49,11 @@ class FacebookPhoto(object):
         self.graph = GraphAPI(self.access_token)
 
     def photos(self):
-        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE owner=me() or pid in (SELECT pid FROM photo_tag WHERE subject=me()) LIMIT 1500'}
+        query = {'query': 'SELECT object_id, pid, aid, images, caption, position \
+                           FROM photo \
+                           WHERE owner=me() or pid in \
+                             (SELECT pid FROM photo_tag WHERE subject=me()) \
+                           LIMIT 1500'}
         return self._fql_result(self.graph.fql(query))
 
     def album(self, aid):
@@ -105,11 +113,8 @@ class FacebookPhoto(object):
         return result['data'][0]['fql_result_set']
 
 if __name__ == '__main__':
-    access_token = "ACCESS_CODE_HERE"
-    base_dir = 'BASE_DIR'
-    tagged_dir = '_TaggedPhotos'
 
-    f = FacebookPhoto(access_token)
+    f = FacebookPhoto(ACCESS_TOKEN)
 
     print "Grabbing your tagged photos"
     photos = f.photos()
@@ -118,10 +123,10 @@ if __name__ == '__main__':
     print "\t# Photos: %d" % num_photos
     i = 0
     for p in photos:
-        photo = Photo(base_dir)
+        photo = Photo(BASE_DIR)
         img_url = p['images'][0]['source']
         print "(%d/%d) " % (i, num_photos),
-        photo.download(img_url, tagged_dir)
+        photo.download(img_url, TAGGED_DIR)
         i += 1
 
     albums = f.albums()
@@ -138,7 +143,7 @@ if __name__ == '__main__':
         print "\t# Photos: %d" % num_album_photos
         i = 1
         for img in album['photos']:
-            photo = Photo(base_dir)
+            photo = Photo(BASE_DIR)
             img_url = img['images'][0]['source']
             print "(%d/%d) " % (i, num_album_photos),
             photo.download(img_url, album_name)
