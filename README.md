@@ -35,8 +35,8 @@ Installation
 
 * Download a copy of fbackup `git clone https://github.com/timothyasp/fbackup.git`
 * Create a Facebook app at https://developers.facebook.com
-* Generate a access token from https://developers.facebook.com/tools/access_token/
-* Copy that access token into fbackup.py
-* Set the download directory in fbackup.py
+* Generate a access token from https://developers.facebook.com/tools/explorer
+   * Make sure you select all the photo relevant permissions in the dialog that
+     pops up, otherwise fbackup won't be able to grab all your photos
 * `python fbackup.py`
 
