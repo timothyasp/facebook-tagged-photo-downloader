@@ -38,5 +38,9 @@ Installation
 * Generate a access token from https://developers.facebook.com/tools/explorer
    * Make sure you select all the photo relevant permissions in the dialog that
      pops up, otherwise fbackup won't be able to grab all your photos
-* `python fbackup.py`
+* Install facepy: `sudo easy_install facepy` or if you don't have `easy_install` (shame on you) https://facepy.readthedocs.org/en/latest/ has info on how to download
+* Run `python fbackup.py`
 
+
+Enjoy!  Let me know if there are any bugs through the issue tracker and I'll
+work on them.  This is the first version of this tool so there are probably bugs, but it has worked for myself and roomates so hopefully it works for you!
