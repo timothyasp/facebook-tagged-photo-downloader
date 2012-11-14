@@ -114,7 +114,7 @@ if __name__ == '__main__':
         ACCESS_TOKEN = raw_input("Enter your access token (generated from https://developers.facebook.com/tools/access_token/): ")
 
     if BASE_DIR == '':
-        BASE_DIR = raw_input("Enter the absolute path to a backup directory (eg /Users/tasp/Photos): ")
+        BASE_DIR = raw_input("Enter the absolute path to a backup directory (eg /Users/tasp/Photos/) WITH TRAILING /: ")
 
     divider = '#'*80
     print "\n\n" + divider
@@ -126,7 +126,6 @@ belong too (~150 albums for 800 tagged photos)."
 
     print "Beginning backup process..."
     f = FacebookPhoto(ACCESS_TOKEN)
-
 
     print "Grabbing your tagged photos..."
     photos = f.photos()
