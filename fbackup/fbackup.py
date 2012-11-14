@@ -152,7 +152,7 @@ belong too (~150 albums for 800 tagged photos)."
         album_name = album['data']['name']
         num_album_photos = len(album['photos'])
 
-        print "(%d/%d) Downloading %s" % (num_albums, cur_album, album_name)
+        print "(%d/%d) Downloading %s" % (cur_album, num_albums, album_name)
         print "\t# Photos: %d" % num_album_photos
         i = 1
         for img in album['photos']:
