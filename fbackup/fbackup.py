@@ -151,11 +151,12 @@ belong too (~150 albums for 800 tagged photos)."
     print "Number of albums: %d" % num_albums
     print "Starting album downloads..."
     print "#"*20
+    cur_album = 1
     for album in albums:
         album_name = album['data']['name']
         num_album_photos = len(album['photos'])
 
-        print "Downloading %s" % album_name 
+        print "(%d/%d) Downloading %s" % (num_albums, cur_album, album_name)
         print "\t# Photos: %d" % num_album_photos
         i = 1
         for img in album['photos']:
@@ -164,6 +165,8 @@ belong too (~150 albums for 800 tagged photos)."
             print "(%d/%d) " % (i, num_album_photos),
             photo.download(img_url, album_name)
             i += 1
+
+        cur_album += 1
 
 
         print "And we're done."
