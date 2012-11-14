@@ -3,8 +3,8 @@ import os.path
 import urllib2
 import re
 
-ACCESS_TOKEN = "ACCESS CODE"
-BASE_DIR = 'DIRECTORY TO DOWNLOAD YOUR PHOTOS'
+ACCESS_TOKEN = '' 
+BASE_DIR = ''
 TAGGED_DIR = '_TaggedPhotos'
 
 class Photo:
@@ -114,9 +114,25 @@ class FacebookPhoto(object):
 
 if __name__ == '__main__':
 
+    if ACCESS_TOKEN == '':
+        ACCESS_TOKEN = raw_input("Enter your access token (generated from https://developers.facebook.com/tools/access_token/): ")
+
+    if BASE_DIR == '':
+        BASE_DIR = raw_input("Enter the absolute path to a backup directory (eg /Users/tasp/Photos): ")
+
+    divider = '#'*80
+    print "\n\n" + divider
+    print "Depending on the number of photos you are tagged in, this \n\
+process could take a very long time.  For ~800 tagged photos, it took \n\
+around an hour and a half to download all of them + the albums they \n\
+belong too (~150 albums for 800 tagged photos)."
+    print divider + "\n\n"
+
+    print "Beginning backup process..."
     f = FacebookPhoto(ACCESS_TOKEN)
 
-    print "Grabbing your tagged photos"
+
+    print "Grabbing your tagged photos..."
     photos = f.photos()
 
     num_photos = len(photos)
