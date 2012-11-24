@@ -1,4 +1,5 @@
 from facepy import GraphAPI, FacepyError 
+import pyexiv2
 import os.path
 import urllib2
 import re
@@ -35,13 +36,31 @@ class Photo:
             album_dir = self.directory
 
         filepath =  album_dir + '/' + filename
+        self.filepath = filepath
         if not os.path.isfile(filepath):
             output = open(filepath, 'wb')
             output.write(response.read())
             output.close()
 
         print " done"
+    
+    def metadata(self, photo):
+        if self.filename:
+            metadata = pyexiv2.ImageMetadata(self.filename)
+            metadata.read()
 
+            date = metadata['Exif.Image.DateTime']
+            caption = metadata['Exif.Image.ImageDescription']
+            date.value = img['created']
+            caption.value = img['caption']
+            metadata['modified'] = pyexiv2.ExifTag('Exif.Image.ModifiedDateTime', img['modified'])
+
+            print metadata.exif_keys
+
+            metadata.write()
+
+        else: 
+            return
 
 class FacebookPhoto(object):
     def __init__(self, access_token):
@@ -49,7 +68,7 @@ class FacebookPhoto(object):
         self.graph = GraphAPI(self.access_token)
 
     def photos(self):
-        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE owner=me() or pid in (SELECT pid FROM photo_tag WHERE subject=me()) LIMIT 1500'}
+        query = {'query': 'SELECT object_id, pid, aid, images, caption, position, created, modified FROM photo WHERE owner=me() or pid in (SELECT pid FROM photo_tag WHERE subject=me()) LIMIT 1500'}
         return self._fql_result(self.graph.fql(query))
 
     def album(self, aid):
@@ -61,7 +80,7 @@ class FacebookPhoto(object):
         return self._fql_result(self.graph.fql(query))
 
     def album_photos(self, aid):
-        query = {'query': 'SELECT object_id, pid, aid, images, caption, position FROM photo WHERE aid="'+ str(aid) +'" LIMIT 1000'}
+        query = {'query': 'SELECT object_id, pid, aid, images, caption, position, created, modified, owner FROM photo WHERE aid="'+ str(aid) +'" LIMIT 1000'}
         return self._fql_result(self.graph.fql(query))
 
     def albums(self):
@@ -159,6 +178,7 @@ belong too (~150 albums for 800 tagged photos)."
             img_url = img['images'][0]['source']
             print "(%d/%d) " % (i, num_album_photos),
             photo.download(img_url, album_name)
+            photo.metadata(img)
             i += 1
 
         cur_album += 1
